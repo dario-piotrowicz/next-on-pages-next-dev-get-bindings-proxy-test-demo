@@ -11,15 +11,20 @@ export async function GET() {
   await myKv.put(key, 'my-value');
   const value = await myKv.get(key);
 
-  const workerResp = await process.env.MY_WORKER.fetch('http://localhost');
-  const workerRespText = await workerResp.text();
+  let workerRespText = "ERROR: no MY_WORKER found";
+  if (process.env.MY_WORKER) {
+    const workerResp = await process.env.MY_WORKER.fetch("http://localhost");
+    workerRespText = await workerResp.text();
+  }
 
-  const myDo = process.env.MY_DO;
-
-  const doId = myDo.idFromName('my-do-name');
-  const doObj = myDo.get(doId);
-  const doResp = await doObj.fetch('http://0.0.0.0');
-  const doRespText = await doResp.text();
+  let doRespText = "ERROR: no MY_DO found";
+  try {
+    const myDo = process.env.MY_DO;
+    const doId = myDo.idFromName("my-do-name");
+    const doObj = myDo.get(doId);
+    const doResp = await doObj.fetch("http://localhost");
+    doRespText = await doResp.text();
+  } catch {}
 
   return new Response(
     `
