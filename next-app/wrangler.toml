@@ -1,0 +1,29 @@
+name = "hello-worker-ta"
+main = "src/index.ts"
+compatibility_date = "2023-11-21"
+
+[vars]
+MY_VAR = "my-var-value"
+MY_JSON_VAR = { test = "true" }
+
+[[kv_namespaces]]
+binding = "MY_KV"
+id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+[[r2_buckets]]
+binding = "MY_R2"
+bucket_name = "my-r2-bucket"
+
+[[services]]
+binding = "MY_WORKER"
+service = "hello-worker"
+
+[[durable_objects.bindings]]
+name = "MY_DO"
+script_name = "do_worker"
+class_name = "DurableObjectClass"
+
+[[d1_databases]]
+binding = "MY_D1"
+database_name = "test-db"
+database_id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
